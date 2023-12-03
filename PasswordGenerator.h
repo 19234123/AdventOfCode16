@@ -1,7 +1,3 @@
-//
-// Created by Steven on 03/12/2023.
-//
-
 #ifndef ADVENTOFCODE16_PASSWORDGENERATOR_H
 #define ADVENTOFCODE16_PASSWORDGENERATOR_H
 #include "md5.h"

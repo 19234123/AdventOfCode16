@@ -3,11 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "Navigator.h"
-#include "keypad.h"
-#include <map>
-#include <algorithm>
-#include "PasswordGenerator.h"
+#include "LetterList.h"
 
 
 using std::string;
@@ -18,11 +14,37 @@ using std::endl;
 string filePath = R"(C:\Dev\Text_files\input.txt)";
 vector<string> readFile();
 string trim(const string& str);
-bool validTriangle(const vector<int>&);
-vector<string> splitLine(const string& line, const char& delimiter);
-string decrypt(const string& encrypted, int cypher);
 
 
+// Day 6
+// Part 1
+int main() {
+    vector<string> rawInput = readFile();
+
+    LetterList* lists[8];
+    for (auto & list : lists){
+        list = new LetterList();
+    }
+
+    for (const auto& line: rawInput){
+        for (int i=0; i<line.size(); i++){
+            lists[i]->letters += line[i];
+        }
+    }
+
+    string decodedMessage;
+    for (auto& list: lists){
+        // Part 1
+        //decodedMessage += list->mostCommonCharacter();
+        // Part 2
+        decodedMessage += list->leastCommonCharacter();
+    }
+
+    cout << decodedMessage;
+    return 0;
+}
+
+/*
 // Day 5
 // Part 2
 int main() {
@@ -39,7 +61,6 @@ int main() {
 
 // Day 5
 // Part 1
-/*
 int main() {
     string input = "ffykfhsq";
     input = "abc";

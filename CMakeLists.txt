@@ -7,4 +7,5 @@ add_executable(AdventOfCode16 main.cpp
         Navigator.cpp
         Navigator.h
         Keypad.cpp
-        Keypad.h)
+        Keypad.h
+)

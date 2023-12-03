@@ -5,6 +5,8 @@
 #include <sstream>
 #include "Navigator.h"
 #include "keypad.h"
+#include <map>
+#include <algorithm>
 
 using std::string;
 using std::vector;
@@ -15,16 +17,96 @@ string filePath = R"(C:\Dev\Text_files\input.txt)";
 vector<string> readFile();
 string trim(const string& str);
 bool validTriangle(const vector<int>&);
+vector<string> splitLine(const string& line, const char& delimiter);
+string decrypt(const string& encrypted, int cypher);
+
+
+// Day 4
+// Part 2
+int main() {
+    vector<string> rawInput = readFile();
+
+    for (const auto& line: rawInput){
+        string currentLine = line.substr(0, line.size()-7);
+        int cipherValue = std::stoi(currentLine.substr(currentLine.size()-3));
+
+        string decrypted = decrypt(currentLine, cipherValue);
+    }
+    return 0;
+}
+
+string decrypt(const string& encrypted, int cypher){
+    string decrypted;
+    for (const auto& letter: encrypted){
+        if (letter == '-'){
+            decrypted += " ";
+        } else if (isalpha(letter)) {
+            int rawValue = ((letter - 96) + cypher) % 26;
+            rawValue += 96;
+            decrypted += char(rawValue);
+        }
+    }
+    if (decrypted == "northpole object storage ") {
+        cout << decrypted << std::to_string(cypher);
+    }
+    return decrypted;
+}
+
+
+/*
+
+// Day 4
+// Part 1
 
 int main() {
     vector<string> rawInput = readFile();
 
+    int totalRoomValue = 0;
+    for (const auto& line: rawInput){
+        vector<string> currentLine = splitLine(line, '-');
+        totalRoomValue += roomValue(currentLine);
+    }
+
+    cout << totalRoomValue;
     return 0;
 }
 
+int roomValue(vector<string> roomData){
+    vector<string> valueAndChecksum = splitLine(roomData.at(roomData.size() - 1), '[');
+    int roomValue = std::stoi(valueAndChecksum.at(0));
+    string checksum = valueAndChecksum.at(1);
+    checksum = checksum.substr(0, checksum.size()-1);
+    roomData.pop_back();
+
+    std::map<char, int> letterValues;
+    for (const auto& line: roomData){
+        for (const auto& letter: line){
+            letterValues[letter]++;
+        }
+    }
+
+    string testString;
+    while (!letterValues.empty()){
+        auto pair = std::max_element(letterValues.begin(), letterValues.end(),
+                                  [](const std::pair<int, int>& p1, const std::pair<int, int>& p2) {
+                                      return p1.second < p2.second; });
+        char key = pair->first;
+        testString += key;
+        letterValues.erase(key);
+    }
+
+    testString = testString.substr(0, 5);
+    if (testString == checksum){
+        return roomValue;
+    } else {
+        return 0;
+    }
+}
+
+
 // Day 3
 // Part 2
-/*
+
 int main() {
     vector<string> rawInput = readFile();
 
@@ -211,4 +293,21 @@ vector<string> readFile(){
         std::cout << "Unable to open file";
     }
     return rawInput;
+}
+
+
+vector<string> splitLine(const string& line, const char& delimiter){
+    vector<string> splitString;
+
+    std::stringstream stream(line);
+
+    string currentLine;
+    while (stream.good()) {
+        std::getline(stream, currentLine, delimiter);
+        if (!currentLine.empty()) {
+            splitString.push_back(trim(currentLine));
+        }
+    }
+
+    return splitString;
 }

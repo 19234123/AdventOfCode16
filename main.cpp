@@ -7,6 +7,8 @@
 #include "keypad.h"
 #include <map>
 #include <algorithm>
+#include "PasswordGenerator.h"
+
 
 using std::string;
 using std::vector;
@@ -21,8 +23,41 @@ vector<string> splitLine(const string& line, const char& delimiter);
 string decrypt(const string& encrypted, int cypher);
 
 
+// Day 5
+// Part 2
+int main() {
+    string input = "ffykfhsq";
+
+    auto *passwordGenerator = new PasswordGenerator(input);
+    for (int i=0; i<8; i++){
+        passwordGenerator->nextIndexAndCharacter();
+    }
+
+    cout << passwordGenerator->password;
+    return 0;
+}
+
+// Day 5
+// Part 1
+/*
+int main() {
+    string input = "ffykfhsq";
+    input = "abc";
+
+    auto *passwordGenerator = new PasswordGenerator(input);
+    string password;
+    for (int i=0; i<8; i++){
+        password += passwordGenerator->getNextCharacter();
+    }
+
+    cout << password;
+
+    return 0;
+}
+
 // Day 4
 // Part 2
+
 int main() {
     vector<string> rawInput = readFile();
 
@@ -53,7 +88,7 @@ string decrypt(const string& encrypted, int cypher){
 }
 
 
-/*
+
 
 // Day 4
 // Part 1

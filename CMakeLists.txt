@@ -8,4 +8,8 @@ add_executable(AdventOfCode16 main.cpp
         Navigator.h
         Keypad.cpp
         Keypad.h
+        md5.cpp
+        md5.h
+        PasswordGenerator.cpp
+        PasswordGenerator.h
 )

@@ -14,4 +14,6 @@ add_executable(AdventOfCode16 main.cpp
         PasswordGenerator.h
         LetterList.cpp
         LetterList.h
+        Address.cpp
+        Address.h
 )

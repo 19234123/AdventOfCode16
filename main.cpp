@@ -3,7 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include "LetterList.h"
+#include "Address.h"
 
 
 using std::string;
@@ -16,8 +16,28 @@ vector<string> readFile();
 string trim(const string& str);
 
 
+// Day 7
+// Part 1
+int main() {
+    vector<string> rawInput = readFile();
+
+    int validAddress = 0;
+    for (const auto& line: rawInput){
+        auto *currentAddress = new Address(line);
+
+        if (currentAddress->valid){
+            validAddress += 1;
+        }
+    }
+
+    cout << validAddress;
+
+    return 0;
+}
+
 // Day 6
 // Part 1
+/*
 int main() {
     vector<string> rawInput = readFile();
 

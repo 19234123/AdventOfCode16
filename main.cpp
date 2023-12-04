@@ -17,7 +17,7 @@ string trim(const string& str);
 
 
 // Day 7
-// Part 1
+// Part 2
 int main() {
     vector<string> rawInput = readFile();
 

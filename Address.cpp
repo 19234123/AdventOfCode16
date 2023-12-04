@@ -15,45 +15,45 @@ Address::Address(const std::string& rawAddress) {
 }
 
 void Address::validateAddress(){
-    if (validAddressRange(validSearchRange) && !validAddressRange(invalidSearchRange)){
-        valid = true;
+    referenceSequences = setValidSequences(referenceList);
+    validationSequences = setValidSequences(validationList);
+
+    for (const auto& reference: referenceSequences){
+        for (const auto& validation: validationSequences){
+            if (reference[0] == validation[1] && reference[1] == validation[0]){
+                valid = true;
+            }
+        }
     }
 }
 
-bool Address::validAddressRange(std::list<std::string>& range){
+std::list<std::string> Address::setValidSequences(std::list<std::string>& range){
+    std::list<std::string> validSequences;
     for (const auto& line: range){
         string firstPair;
         string secondPair;
-        int maxIndex = line.size()-3;
+        int maxIndex = line.size()-2;
 
         for (int i=0; i<maxIndex; i++){
-            firstPair += line[i];
-            firstPair += line[i+1];
-            secondPair += line[i+2];
-            secondPair += line[i+3];
-
-            if (firstPair[0] != firstPair[1]){
-                if (firstPair[0] == secondPair[1] && firstPair[1] == secondPair[0]){
-                    return true;
-                }
+            string testSequence = line.substr(i, 3);
+            if (testSequence[0] == testSequence[2] && testSequence[0] != testSequence[1]){
+                validSequences.push_back(testSequence);
             }
-            firstPair.clear();
-            secondPair.clear();
         }
     }
-    return false;
+    return validSequences;
 }
 
 
 void Address::setupSearchRange() {
     vector<string> addressSplit = splitLine(rawAddress, '[');
-    validSearchRange.push_back(addressSplit.at(0));
+    referenceList.push_back(addressSplit.at(0));
     addressSplit.erase(addressSplit.begin());
 
     for (const auto& line: addressSplit) {
         vector<string> lineSplit = splitLine(line, ']');
-        invalidSearchRange.push_back(lineSplit.at(0));
-        validSearchRange.push_back(lineSplit.at(1));
+        validationList.push_back(lineSplit.at(0));
+        referenceList.push_back(lineSplit.at(1));
     }
 }
 

@@ -1,12 +1,12 @@
 #include "StringParser.h"
 
-string StringParser::getDecompressedString() {
+long long StringParser::getDecompressedStringLength() {
     int inputStringIndex = 0;
 
     while (inputStringIndex < inputString.size()) {
         auto& currentChar = inputString[inputStringIndex];
         if (currentChar != '('){
-            decompressedString += currentChar;
+            decompressedLength++;
             inputStringIndex++;
         } else {
             auto markerStartIndex = inputStringIndex + 1;
@@ -17,26 +17,17 @@ string StringParser::getDecompressedString() {
             vector<int> markerSplit = splitLineToInt(marker, 'x');
 
             string compressedChars = inputString.substr(markerEndIndex+1, markerSplit[0]);
-            for (int i=0; i<markerSplit[1]; i++) {
-                decompressedString += compressedChars;
-            }
+            auto compressedLength = compressedChars.size();
+            decompressedLength += (long long)(markerSplit[1]*compressedLength);
+
             inputStringIndex = (int)(markerEndIndex + compressedChars.size() + 1);
         }
     }
 
-//    vector<string> lineData = splitLine(input, ')');
-//    string decompressedString;
-//
-//    for (int i=0; i<input.size(); input) {
-//        char currentChar = input[i];
-//        string x;
-//    }
-
-    return this->decompressedString;
+    return this->decompressedLength;
 }
 
 void StringParser::setInputString(const string &input) {
     this->inputString = input;
-    this->decompressedString.clear();
-
+    this->decompressedLength = 0;
 }

@@ -9,7 +9,7 @@ using std::vector;
 using std::cout;
 using std::endl;
 
-string filePath = R"(C:\Dev\Text_files\input.txt)";
+string filePath = R"(C:\Dev\Text_files\input2.txt)";
 
 
 // Day 9
@@ -20,13 +20,11 @@ int main() {
 
     auto stringParser = new StringParser();
 
-    int totalLength = 0;
+    long long totalLength = 0;
     for (const auto& line: rawInput) {
         stringParser->setInputString(line);
-        auto decompressedString = stringParser->getDecompressedString();
-        auto decompressedLength = stringParser->decompressedString.size();
+        auto decompressedLength = stringParser->getDecompressedStringLength();
         cout << "Input line: " << line << endl;
-        cout << "Decompressed line: " << decompressedString << endl;
         cout << "Decompressed Length: " << decompressedLength << endl << endl;
         totalLength += decompressedLength;
     }

@@ -8,10 +8,10 @@ using std::string;
 class StringParser {
 public:
     string inputString;
-    string decompressedString;
+    long long decompressedLength;
 
     void setInputString(const string& input);
-    string getDecompressedString();
+    long long getDecompressedStringLength();
 
 
 };

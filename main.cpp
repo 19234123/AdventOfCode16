@@ -1,10 +1,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <fstream>
-#include <sstream>
-#include "Address.h"
-
+#include "Functions.h"
+#include "StringParser.h"
 
 using std::string;
 using std::vector;
@@ -12,12 +10,51 @@ using std::cout;
 using std::endl;
 
 string filePath = R"(C:\Dev\Text_files\input.txt)";
-vector<string> readFile();
-string trim(const string& str);
 
+
+// Day 9
+// Part 1
+
+int main() {
+    vector<string> rawInput = readFile(filePath);
+
+    auto stringParser = new StringParser();
+
+    int totalLength = 0;
+    for (const auto& line: rawInput) {
+        stringParser->setInputString(line);
+        auto decompressedString = stringParser->getDecompressedString();
+        auto decompressedLength = stringParser->decompressedString.size();
+        cout << "Input line: " << line << endl;
+        cout << "Decompressed line: " << decompressedString << endl;
+        cout << "Decompressed Length: " << decompressedLength << endl << endl;
+        totalLength += decompressedLength;
+    }
+
+    cout << totalLength;
+    return 0;
+}
+
+
+// Day 8
+// Part 1
+/*
+int main() {
+    vector<string> instructionList = readFile(filePath);
+    auto screen = new Screen(50, 6);
+
+    for (const auto& instruction: instructionList) {
+        screen->updateScreen(instruction);
+    }
+    screen->display();
+
+    cout << screen->numberPixelsLit();
+    return 0;
+}
 
 // Day 7
 // Part 2
+/*
 int main() {
     vector<string> rawInput = readFile();
 
@@ -340,50 +377,9 @@ int main() {
         }
     }
 
-    cout << std::abs(navigator->x) + std::abs(navigator->y);
+    cout << std::abs(navigator->row) + std::abs(navigator->column);
 
 
 
     return 0;
 }*/
-
-
-string trim(const string& str){
-    size_t first = str.find_first_not_of(' ');
-    size_t last = str.find_last_not_of(' ');
-    return str.substr(first, (last-first+1));
-}
-
-
-vector<string> readFile(){
-    vector<string> rawInput;
-
-    std::ifstream file(filePath);
-
-    if (file.is_open()) {
-        string line;
-        while(std::getline(file, line)) {
-            rawInput.push_back(line);
-        }
-    } else {
-        std::cout << "Unable to open file";
-    }
-    return rawInput;
-}
-
-
-vector<string> splitLine(const string& line, const char& delimiter){
-    vector<string> splitString;
-
-    std::stringstream stream(line);
-
-    string currentLine;
-    while (stream.good()) {
-        std::getline(stream, currentLine, delimiter);
-        if (!currentLine.empty()) {
-            splitString.push_back(trim(currentLine));
-        }
-    }
-
-    return splitString;
-}

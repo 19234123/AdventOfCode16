@@ -4,16 +4,27 @@
 #include "Functions.h"
 
 using std::string;
+using std::vector;
 
 class StringParser {
+private:
+    class CompressedSubstring {
+    public:
+        int multiplier;
+        string substring;
+        long long decompressedLength;
+
+        CompressedSubstring(const string& substring, int multiplier);
+    private:
+        [[nodiscard]] bool hasCompressionMarker() const;
+        long long substringDecompressedLength();
+    };
+
 public:
-    string inputString;
     long long decompressedLength;
 
-    void setInputString(const string& input);
-    long long getDecompressedStringLength();
-
-
+    explicit StringParser(const string& inputString);
+    static long long getDecompressedStringLength(const string& inputString, int stringIndex);
 };
 
 

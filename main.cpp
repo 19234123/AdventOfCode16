@@ -11,25 +11,19 @@ using std::endl;
 
 string filePath = R"(C:\Dev\Text_files\input2.txt)";
 
-
 // Day 9
-// Part 1
-
 int main() {
     vector<string> rawInput = readFile(filePath);
 
-    auto stringParser = new StringParser();
+    for (const auto& compressedLine: rawInput) {
+        auto stringParser = new StringParser(compressedLine);
+        auto decompressedLength = stringParser->decompressedLength;
 
-    long long totalLength = 0;
-    for (const auto& line: rawInput) {
-        stringParser->setInputString(line);
-        auto decompressedLength = stringParser->getDecompressedStringLength();
-        cout << "Input line: " << line << endl;
+        cout << "Compressed length: " << compressedLine.size() << endl;
+        //cout << "Input compressedLine: " << compressedLine << endl;
         cout << "Decompressed Length: " << decompressedLength << endl << endl;
-        totalLength += decompressedLength;
     }
 
-    cout << totalLength;
     return 0;
 }
 

@@ -72,7 +72,7 @@ private:
 
     bool finalized;
     uint1 buffer[blocksize]; // bytes that didn't fit in last 64 byte chunk
-    uint4 count[2];   // 64bit counter for number of bits (lo, hi)
+    uint4 count[2];   // 64bit counter for id of bits (lo, hi)
     uint4 state[4];   // digest so far
     uint1 digest[16]; // the result
 

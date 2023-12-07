@@ -1,17 +1,79 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include "Functions.h"
-#include "StringParser.h"
+#include "Robot.h"
 
 using std::string;
 using std::vector;
 using std::cout;
 using std::endl;
 
-string filePath = R"(C:\Dev\Text_files\input2.txt)";
+string filePath = R"(C:\Dev\Text_files\input.txt)";
+
+// Day 10
+int main() {
+    vector<string> rawInput = readFile(filePath);
+
+    std::map<string, Robot*> &robotList = Robot::robotList;
+    vector<string> valueAssignments;
+    vector<string> instructions;
+    for (const auto& line: rawInput) {
+        vector<string> splitLine = splitLineToString(line, ' ');
+
+        if (splitLine.size() != 6){
+            instructions.push_back(line);
+        } else {
+            valueAssignments.push_back(line);
+
+            string robotId = splitLine[5];
+            int chipValue = std::stoi(splitLine[1]);
+
+            if (robotList.find(robotId) == robotList.end()) {
+                new Robot(robotId);
+            }
+            robotList[robotId]->chips.push_back(chipValue);
+        }
+    }
+
+    while (!instructions.empty()) {
+        for (int i=0; i<instructions.size(); i++) {
+            vector<string> splitLine = splitLineToString(instructions[i], ' ');
+
+            string robotId = splitLine[1];
+            string lowRobotId = splitLine[6];
+            string highRobotId = splitLine[11];
+
+            lowRobotId = (splitLine[5] == "output") ? ("output" + lowRobotId) : lowRobotId;
+            highRobotId = (splitLine[10] == "output") ? ("output" + highRobotId) : highRobotId;
+
+            for (const auto &id: {robotId, lowRobotId, highRobotId}) {
+                if (robotList.find(id) == robotList.end()) {
+                    new Robot(id);
+                }
+            }
+
+            auto robot = robotList[robotId];
+
+            if (robot->chips.size() != 2) {
+                continue;
+            }
+
+            int firstNumber = 61;
+            int secondNumber = 17;
+            if (robot->targetChipComparison(firstNumber, secondNumber)) {
+                cout << "Robot " << robot->id << " found chips " << firstNumber << " and " << secondNumber;
+            }
+            robot->passNumbers(robotList[lowRobotId], robotList[highRobotId]);
+            instructions.erase(instructions.begin() + i);
+        }
+    }
+
+    return 0;
+}
+
 
 // Day 9
+/*
 int main() {
     vector<string> rawInput = readFile(filePath);
 

@@ -22,4 +22,6 @@ add_executable(AdventOfCode16 main.cpp
         Functions.h
         StringParser.cpp
         StringParser.h
+        Robot.cpp
+        Robot.h
 )

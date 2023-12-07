@@ -250,15 +250,15 @@ void MD5::transform(const uint1 block[blocksize])
 // operation, processing another message block
 void MD5::update(const unsigned char input[], size_type length)
 {
-    // compute number of bytes mod 64
+    // compute id of bytes mod 64
     size_type index = count[0] / 8 % blocksize;
 
-    // Update number of bits
+    // Update id of bits
     if ((count[0] += (length << 3)) < (length << 3))
         count[1]++;
     count[1] += (length >> 29);
 
-    // number of bytes we need to fill in buffer
+    // id of bytes we need to fill in buffer
     size_type firstpart = 64 - index;
 
     size_type i;
@@ -304,7 +304,7 @@ MD5& MD5::finalize()
     };
 
     if (!finalized) {
-        // Save number of bits
+        // Save id of bits
         unsigned char bits[8];
         encode(bits, count, 8);
 
